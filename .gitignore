@@ -1,0 +1,62 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environment directories
+env/
+venv/
+ENV/
+.venv/
+
+# SQLite database files
+*.sqlite3
+
+# Django static files
+staticfiles/
+static/
+media/
+
+# Local environment variables
+.env
+*.env
+
+# IDE and editor specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and local database
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+*.pid
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# MySQL database dumps
+*.sql
+*.dump
+
+# Docker related files
+*.env
