@@ -19,11 +19,12 @@ def reserve_subnet(payload: SubnetCreate, db: Session = Depends(get_db), current
     if not network:
         raise HTTPException(status_code=404, detail="Network not found")
 
-    # 2. Retrieve existing subnets for this network
+    # 2. Retrieve existing subnets and cidr for this network
     existing_subnets = get_subnets_by_network(db, network.id)
+    existing_cidrs = [subnet.subnet for subnet in existing_subnets]
 
     # 3. Find a free subnet based on the prefix
-    free_subnet = find_free_subnet(network.cidr, existing_subnets, payload.prefix)
+    free_subnet = find_free_subnet(network.cidr, payload.prefix, existing_cidrs)
     if not free_subnet:
         raise HTTPException(status_code=400, detail="No available subnet found")
 

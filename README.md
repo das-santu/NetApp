@@ -56,8 +56,8 @@ DATABASE_URL=postgresql://user:password@localhost/dbname
 SECRET_KEY="access_secret_key"
 REFRESH_SECRET_KEY="refresh_secret_key"
 ALGORITHM="HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES=30  # Short-lived access token
-REFRESH_TOKEN_EXPIRE_DAYS=7     # Longer-lived refresh token
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_DAYS=7
 ```
 
 #### 4. Apply Database Migrations:

@@ -13,13 +13,15 @@ def calculate_subnets(network_cidr: str, prefix_length: int):
         raise ValueError(f"Invalid input: {e}")
 
 
-def find_free_subnet(network_cidr, existing_subnets, prefix):
-    # Convert network CIDR into an ipaddress network object
-    parent_network = ipaddress.ip_network(network_cidr)
-    used_subnets = [ipaddress.ip_network(subnet.subnet) for subnet in existing_subnets]
+def find_free_subnet(network_cidr: str, prefix: int, existing_subnets: list[str]) -> str:
+    """
+    Find the first non-overlapping subnet of the given prefix within the network.
+    """
+    network = ipaddress.ip_network(network_cidr, strict=False)
+    existing_subnet_objects = [ipaddress.ip_network(cidr, strict=False) for cidr in existing_subnets]
 
-    # Generate subnets with the desired prefix length
-    for candidate in parent_network.subnets(new_prefix=prefix):
-        if candidate not in used_subnets:
-            return str(candidate)  # Return first available subnet
-    return None
+    # Generate all possible subnets of the given prefix within the network
+    for possible_subnet in network.subnets(new_prefix=prefix):
+        if not any(possible_subnet.overlaps(existing) for existing in existing_subnet_objects):
+            return str(possible_subnet)  # Return the first non-overlapping subnet
+    return None  # No free subnet available
