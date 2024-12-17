@@ -17,7 +17,7 @@ class NetworkResponse(NetworkBase):
     reserved_by: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class NetworkUtilizationResponse(BaseModel):
@@ -28,4 +28,4 @@ class NetworkUtilizationResponse(BaseModel):
     available_percentage: float
 
     class Config:
-        orm_mode = True
+        from_attributes = True
