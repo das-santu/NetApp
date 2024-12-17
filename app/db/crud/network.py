@@ -10,6 +10,7 @@ def create_network(db: Session, network_data: NetworkCreate):
     db.refresh(network)
     return network
 
+
 def get_network_by_id(db: Session, network_id: str):
     return db.query(Network).filter(Network.id == network_id).first()
 

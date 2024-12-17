@@ -36,7 +36,7 @@ setup: env install
 format:
 	@$(PYTHON) -m flake8
 	@echo "Flake8 test completed!"
-	@$(PYTHON) -m black . --check --diff --line-length 125 --extend-exclude=$(VENV) --skip-string-normalization
+	@$(PYTHON) -m black . --check --diff --line-length 130 --extend-exclude=$(VENV) --skip-string-normalization
 	@echo "Black test completed!"
 
 # Run the Django development server

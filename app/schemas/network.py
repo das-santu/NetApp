@@ -14,11 +14,18 @@ class NetworkCreate(NetworkBase):
 
 class NetworkResponse(NetworkBase):
     id: int
-    name: str
-    cidr: str
-    description: str
-    usage: str
     reserved_by: int
+
+    class Config:
+        orm_mode = True
+
+
+class NetworkUtilizationResponse(BaseModel):
+    network: str
+    total_ips: int
+    used_ips: int
+    reserved_percentage: float
+    available_percentage: float
 
     class Config:
         orm_mode = True
