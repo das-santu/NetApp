@@ -4,7 +4,8 @@ from app.db.session import get_db
 from app.db.crud.user import get_user_by_username_or_email, create_user
 from app.schemas.auth import UserCreate, LoginRequest, RefreshRequest
 from app.core.security import hash_password
-from app.core.security import verify_password, create_access_token, create_refresh_token, verify_refresh_token
+from app.core.security import verify_password, create_access_token, create_refresh_token, verify_decode_jwt_token
+from app.core.config import settings
 
 router = APIRouter()
 
@@ -33,12 +34,10 @@ def login_user(login_data: LoginRequest, db: Session = Depends(get_db)):
 
 @router.post("/refresh")
 def refresh_token(payload: RefreshRequest):
-    payload = verify_refresh_token(payload.refresh_token)
-    if not payload:
-        raise HTTPException(status_code=401, detail="Invalid or expired refresh token")
+    payload = verify_decode_jwt_token(payload.refresh_token, settings.REFRESH_SECRET_KEY)
 
     # Create new access and refresh tokens
-    username = payload.get("sub")
+    username = payload.get("id")
     new_access_token = create_access_token({"sub": username})
     new_refresh_token = create_refresh_token({"sub": username})
 

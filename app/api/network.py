@@ -2,18 +2,26 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.schemas.network import NetworkCreate, NetworkResponse
-from app.db.crud.network import create_network, get_all_networks, get_network_by_cidr
+from app.db.crud.network import create_network, get_all_networks, get_network_by_cidr, get_network_by_name
+from app.db.crud.user import get_user_by_username_or_email
 from app.core.security import get_current_user
+from copy import copy
 
 router = APIRouter(dependencies=[Depends(get_current_user)])
 
 
 @router.post("/", response_model=NetworkResponse)
-def reserve_network(network_data: NetworkCreate, db: Session = Depends(get_db)):
+def reserve_network(network_data: NetworkCreate, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     existing_network = get_network_by_cidr(db, network_data.cidr)
+    existing_network_name = get_network_by_name(db, network_data.name)
     if existing_network:
         raise HTTPException(status_code=400, detail="Network already exists")
-    return create_network(db, network_data)
+    if existing_network_name:
+        raise HTTPException(status_code=400, detail="Network name already exists")
+    current_user = get_user_by_username_or_email(db, current_user.get("id"))
+    network = copy(network_data.dict())
+    network["reserved_by"] = current_user.id
+    return create_network(db, network)
 
 
 @router.get("/", response_model=list[NetworkResponse])

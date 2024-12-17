@@ -27,7 +27,7 @@ def reserve_subnet(payload: SubnetCreate, db: Session = Depends(get_db), current
     if not free_subnet:
         raise HTTPException(status_code=400, detail="No available subnet found")
 
-    current_user = get_user_by_username_or_email(db, current_user.get("sub"))
+    current_user = get_user_by_username_or_email(db, current_user.get("id"))
 
     # 4. Reserve the subnet
     new_subnet = {

@@ -14,6 +14,11 @@ class NetworkCreate(NetworkBase):
 
 class NetworkResponse(NetworkBase):
     id: int
+    name: str
+    cidr: str
+    description: str
+    usage: str
+    reserved_by: int
 
     class Config:
         orm_mode = True
